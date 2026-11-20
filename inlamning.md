@@ -4,8 +4,6 @@
 
 # MySQL
 
-Skärmdump som visar database explorer i IntelliJ med skapad person-tabell med data:
-
 ![MySQL i database explorer](bilder/Person-tabell.jpg)
 
 # MongoDB
