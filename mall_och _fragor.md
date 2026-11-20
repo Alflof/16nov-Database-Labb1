@@ -4,7 +4,7 @@
 
 Skärmdump som visar database explorer i IntelliJ med skapad person-tabell med data:
 
-![MySQL i database explorer](bilder/bild2.png)
+![MySQL i database explorer](bilder/Person-tabell.jpg)
 
 NOT: Ni ska även ha skapat en user som bara har access till databasen my_database, ingen bild krävs
 
@@ -18,7 +18,7 @@ Skärmdump av databas på MongoDB Atlas med skapad movie-collection med data:
 
 Skärmdump som visar att ni klarat av första två sidorna på sqlbolt.com:s interaktiva tutorial
 
-![SQL-bolt](bilder/bild4.png)
+![SQL-bolt](bilder/SQLBolt.jpg)
 
 # Frågor som ni ska svara på (G-nivå)
 
@@ -100,6 +100,29 @@ Dessa frågor ska besvaras med ett längre svar, minst en halv A4-sida:
 
 1. En banköverföring avbryts efter att pengarna dragits från det första kontot.
    Vad kan konsekvensen bli, och hur kan en transaktion hjälpa?
+
+Om en banköverföring avbryts under processens förlopp (på grund av en krasch, nätverksfel, eller dylikt)
+kan databasen hamna i ett inkonsekvent tillstånd där information har förlorats.
+Det kan till exempel resultera i att uttaget från det första kontot finns men att insättningen saknas.
+Konsekvensen av detta är att pengar som skulle hamna på det andra kontot har aldrig kommit fram trots att
+de har dragits från det första, vilket vore katastrofalt i situationer där viktiga värden såsom saldon ändras.
+Med hjälp av en transaktion förhindras detta tillstånd eftersom den grupperar ändringar och utför alla tillsammans.
+
+En transaktion kan se ut på följande vis:
+START TRANSACTION; <-- Ändringar efter detta hålls tillfälliga
+INSERT INTO, UPDATE, DELETE <-- Kommandon som ändrar informationen, t ex uttag och insättning
+COMMIT; <-- Båda ändringarna verkställs samtidigt
+
+Transaktioner har fyra egenskaper, förkortade till ACID:
+Atomicity: Antingen utförs alla ändringar eller ingen alls.
+Consistency: Databasen följer alltid sina egna regler, t ex att en Foreign Key måste referera till en befintlig Primary
+Key.
+Isolation: Registreringar är isolerade och påverkar inte varandra.
+Durability: När transaktionen är korrekt utförd med COMMIT finns ändringar kvar även efter
+eventuell krasch, eftersom databasen vanligtvis sparar ändringarna i en logg på disk innan transaktionen bekräftats.
+
+Med hjälp av kommandot ROLLBACK möjliggörs återställning av databasen till läget före transaktionen, med referens till
+en “undo”-logg.
 
 2. Välj ett enkelt system, antingen en webbutik eller en chatt.
    Resonera om när en relationsdatabas respektive en NoSQL-databas
